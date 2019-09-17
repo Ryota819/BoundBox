@@ -1,0 +1,45 @@
+.navbar-brand {
+  font-family: "Damion", cursive;
+}
+
+.nav-menu {
+  background: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
+  border-bottom: solid thin #dbdcdd;
+  /* background-color: #eee; */
+  padding: 15px;
+  transition: all 0.7s;
+}
+
+.menu-item {
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #6c757d;
+  transition: color 0.5s;
+}
+.menu-item:hover {
+  color: #70aed2;
+}
+
+.line1,
+.line2,
+.line3 {
+  width: 23px;
+  height: 3px;
+  margin: 5px;
+  transition: all 0.4s;
+}
+
+.change .line1 {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+.change .line2 {
+  opacity: 0;
+}
+.change .line3 {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.custom-navbar {
+  padding: 5px 30px;
+  background-color: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
+}
