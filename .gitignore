@@ -74,3 +74,29 @@ __pycache__/
 local_settings.py
 db.sqlite3
 media
+# Distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+static
+# dotenv
+.env
+
+# virtualenv
+venv/
+ENV/
+venv2
