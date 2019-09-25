@@ -2,10 +2,9 @@
   <!-- nabver -->
   <!-- <nav class="navbar navbar-expand-lg fixed-top nav-menu"> -->
   <nav class="navbar fixed-top nav-menu">
-    <a href="#" class="navbar-brand text-secondary text-uppercase"><span class="h2
+    <a class="navbar-brand text-secondary text-uppercase"><span class="h2
           font-weight-bold">Bound</span><span class="h1">Box</span></a>
-
-    <form class="form-inline">
+    <form [formGroup]="SearchForm" (ngSubmit)="saveForm()" class="form-inline">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search">
         <div class="input-group-append">
