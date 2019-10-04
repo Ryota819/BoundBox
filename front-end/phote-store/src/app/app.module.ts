@@ -1,32 +1,27 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { MenuComponent } from './menu/menu.component';
-import { HomeComponent } from './home/home.component';
-import { LikeboxComponent } from './likebox/likebox.component';
-import { RecommendComponent } from './recommend/recommend.component';
-import { ProfileComponent } from './profile/profile.component';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppComponent } from "./app.component";
+
+import { ReactiveFormsModule } from "@angular/forms";
+import { HttpClientModule } from "@angular/common/http";
+import { CookieService } from "ngx-cookie-service";
+import { AuthModule } from "./auth/auth.module";
+import { MainModule } from "./main/main.module";
+import { MainComponent } from "./main/main.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MenuComponent,
-    HomeComponent,
-    LikeboxComponent,
-    RecommendComponent,
-    ProfileComponent,
-    LoginComponent,
-    LogoutComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AuthModule,
+    MainModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
