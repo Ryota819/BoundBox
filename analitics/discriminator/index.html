@@ -1,0 +1,94 @@
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>画像判別機</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+  <style type="text/css">
+.wrapper {
+  padding: 60px 40px;
+}
+.upload-wrapper {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border: 3px solid black;
+  text-align: center;
+  vertical-align: middle;
+  display:table-cell;
+}
+#preview {
+  width: 300px;
+  height: 300px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#result {
+  white-space: pre-wrap;
+}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/native-promise-only/0.8.1/npo.js" integrity="sha256-o/UXdF4sFrbgV5UCIWF5ca7VMLDdplhzA4knJ4nFsc0=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js" integrity="sha256-eOUokb/RjDw7kS+vDwbatNrLN8BIvvEhlLM5yogcDIo=" crossorigin="anonymous"></script>
+  <script>
+(function () {
+  function uploadFile (file) {
+    var formData = new FormData();
+    formData.append('upload', file)
+    return fetch('/api/upload', {
+      method: 'POST',
+      body: formData
+    }).then(function (response) {
+      return response.json();
+    });
+  }
+  function showResult (text) {
+    var result = document.getElementById('result');
+    result.innerHTML = text;
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    showResult('画像を選択して下さい');
+    var upload = document.getElementById('upload');
+    var preview = document.getElementById('preview');
+    upload.addEventListener('change', function (e) {
+      preview.removeAttribute('src');
+      var file = e.target.files[0];
+      if (!file) {
+        showResult('画像を選択して下さい');
+        return;
+      }
+      showResult('判別中...');
+      var uploadFileReader = new FileReader();
+      uploadFileReader.readAsDataURL(file);
+      uploadFileReader.onload = function () {
+        preview.setAttribute('src', uploadFileReader.result);
+      };
+      uploadFile(file).then(function (results) {
+        showResult(results.map(function (result) {
+          return result.name + ': ' + (Math.round(result.ratio * 10000) / 100) + '%';
+        }).join('\n'));
+      }).catch(function (e) {
+        showResult('判別に失敗しました。');
+        console.error(e);
+      });
+    });
+  });
+})();
+  </script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="upload-wrapper">
+      <label for="upload">
+        <i id="icon-camera" class="fa fa-camera fa-5x" aria-hidden="true"></i>
+        <img id="preview" />
+      </label>
+      <input id="upload" type="file" name="upload" accept="image/*" style="display:none;" />
+    </div>
+    <div id="result">画像が選択されていません</div>
+  </div>
+</body>
+
+</html>
