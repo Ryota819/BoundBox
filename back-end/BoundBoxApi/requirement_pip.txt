@@ -2,4 +2,4 @@
 django
 djangorestframework
 django-filter
-django-cors-headers
+django-cors-headerspytho

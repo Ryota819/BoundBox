@@ -6,12 +6,12 @@
   background: linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0.9));
   border-bottom: solid thin #dbdcdd;
   /* background-color: #eee; */
-  padding: 15px;
+  padding: 5px;
   transition: all 0.7s;
 }
 
 .menu-item {
-  font-size: 13px;
+  font-size: 11px;
   letter-spacing: 1px;
   color: #6c757d;
   transition: color 0.5s;
@@ -40,6 +40,6 @@
 }
 
 .custom-navbar {
-  padding: 5px 30px;
+  padding: 1px 20px;
   background-color: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7));
 }

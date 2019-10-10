@@ -2,8 +2,8 @@
   <div class="container-fluid">
     <!-- title -->
     <div class="row text-muted text-center">
-      <div class="col m-4">
-        <h1 class="display-4 mb-4">Gallery</h1>
+      <div class="col">
+        <h1 class="display-4 mb-2">Gallery</h1>
         <div class="underline-dark"></div>
       </div>
     </div>
@@ -12,33 +12,35 @@
       <li class="list-inline-item gallery-list-item active-item" data-filter="all">All<span
           class="mx-md-5 mx-3 text-muted">/</span>
       </li>
-      <li class="list-inline-item gallery-list-item" data-filter="yuzu">ゆず<span class="mx-md-5 mx-3 text-muted">/</span>
+      <li class="list-inline-item gallery-list-item" data-filter="YUZU">ゆず<span class="mx-md-5 mx-3 text-muted">/</span>
       </li>
-      <li class="list-inline-item gallery-list-item" data-filter="kita">北川悠仁<span
+      <li class="list-inline-item gallery-list-item" data-filter="KITA">北川悠仁<span
           class="mx-md-5 mx-3 text-muted">/</span>
       </li>
-      <li class="list-inline-item gallery-list-item" data-filter="iwa">岩沢厚治
+      <li class="list-inline-item gallery-list-item" data-filter="IWA">岩沢厚治
       </li>
     </ul>
     <div class="container-fluid">
       <div class="d-flex flex-wrap justify-content-center">
-        <div class="filter yuzu"><img src="../../assets/IMG_8519.jpg" width="400"></div>
-        <div class="filter yuzu"><img src="../../assets/IMG_20160803_225239.jpg" width="400"></div>
-        <div class="filter yuzu"><img src="../../assets/IMG_20161130_214131.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_0648.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_0774.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1023.jpg" width="400"></div>
-        <div class="filter kita"><img src="../../assets/IMG_kita2.jpg" width="400"></div>
-        <div class="filter kita"><img src="../../assets/IMG_kita3.jpg" width="400"></div>
-        <div class="filter kita"><img src="../../assets/IMG_kita4.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1027.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1028.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1029.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1244.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_9151.jpg" width="400"></div>
-        <div class="filter iwa"><img src="../../assets/IMG_1246.jpg" width="400"></div>
-
+        <div *ngFor="let file of files;let i= index">
+          <div class="filter {{ file.tag }}">
+            <div class="card">
+              <img src="{{ baseurl }}{{file.file}}" width="600">
+              <div class="card-body">
+                <p class="card-text text-secondary"><i class="far fa-comment-alt"></i> {{file.no_of_comments}} <i
+                    class="far fa-heart"></i> {{file.no_of_empathy}}</p>
+                <p class="card-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="container-fluid" *ngIf="next == null">
+      <div class="end text-center">
+        <p>全ての思い出を読み込みました。</p>
+      </div>
+    </div>
+
   </div>
 </section>

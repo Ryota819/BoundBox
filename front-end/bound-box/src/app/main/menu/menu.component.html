@@ -4,7 +4,23 @@
   <nav class="navbar fixed-top nav-menu">
     <a routerLink="/home" class="navbar-brand text-secondary text-uppercase"><span class="h2
           font-weight-bold">Bound</span><span class="h1">Box</span></a>
-    <form [formGroup]="SearchForm" class="form-inline">
+
+    <ul class="nav">
+      <li class="nav-item">
+        <a routerLink="/likebox" class="nav-link menu-item"><i class="fas fa-box-open fa-2x"></i></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/recommend" class="nav-link menu-item"><i class="far fa-heart fa-2x"></i></a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/profile" class="nav-link menu-item"><i class="far fa-user fa-2x"></i></a>
+      </li>
+      <li class="nav-item">
+        <a (click)="logout()" class="nav-link"><span class="menu-item"><i
+              class="fas fa-sign-out-alt fa-2x"></i></span></a>
+      </li>
+    </ul>
+    <!-- <form [formGroup]="SearchForm" class="form-inline">
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search">
         <div class="input-group-append">
@@ -12,9 +28,9 @@
               class="fas fa-search text-muted"></i></button>
         </div>
       </div>
-    </form>
+    </form> -->
 
-    <button class="navbar-toggler nav-button" type="button" data-toggle="collapse" data-target="#myNavbar">
+    <!-- <button class="navbar-toggler nav-button" type="button" data-toggle="collapse" data-target="#myNavbar">
       <div class="bg-secondary line1"></div>
       <div class="bg-secondary line2"></div>
       <div class="bg-secondary line3"></div>
@@ -30,7 +46,10 @@
         <li class="nav-item">
           <a routerLink="/profile" class="nav-link m-2 menu-item">Profile</a>
         </li>
+        <li class="nav-item">
+          <a (click)="logout()"><span class="nav-link m-2 menu-item">Logout</span></a>
+        </li>
       </ul>
-    </div>
+    </div> -->
   </nav>
 </header>

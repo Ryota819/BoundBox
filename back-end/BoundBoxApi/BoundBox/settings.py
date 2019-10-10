@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'api',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -85,14 +86,22 @@ DATABASES = {
     }
 }
 
+# REST_FRAMEWORK = {
+#    'DEFAULT_PERMISSION_CLASSES': (
+#        'rest_framework.permissions.IsAuthenticated',
+#    )
+# }
 REST_FRAMEWORK = {
-   'DEFAULT_PERMISSION_CLASSES': {
-       'rest_framework.permissions.IsAuthenticated',
-   }
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 30
 }
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:4200',
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:4200',
+# ]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'enctype',
 ]
 
 # Password validation
@@ -134,4 +143,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
