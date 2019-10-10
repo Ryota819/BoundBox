@@ -1,18 +1,21 @@
 <header>
   <!-- Default form login -->
   <div class="container">
-    <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 form_menu">
+    <div class="col-lg-7 offset-lg-3 col-md-9 offset-md-2 form_menu">
       <!-- <form class="text-center border border-light"> -->
       <form [formGroup]="authForm" (ngSubmit)="saveForm()" class="text-center border border-light">
-        <p class="h4 mb-4">Login</p>
+        <br>
+        <p *ngIf="!registerMode" class="h4 mb-4">Login</p>
+        <p *ngIf="registerMode" class="h4 mb-4">Register</p>
         <div class="offset-2 col-8">
           <!-- Email -->
-          <!-- <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="username"> -->
           <input type="email" formControlName="username" class="form-control mb-4" placeholder="Username">
           <!-- Password -->
-          <!-- <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password"> -->
           <input type="password" formControlName="password" class="form-control mb-4" placeholder="Password">
-          <div class="d-flex justify-content-around">
+
+          <input *ngIf="registerMode" type="email" formControlName="email" class="form-control mb-4"
+            placeholder="Email">
+          <div *ngIf="!registerMode" class="d-flex justify-content-around p-2">
             <div>
               <!-- Remember me -->
               <div class="custom-control custom-checkbox">
@@ -24,14 +27,20 @@
               <!-- Forgot password -->
               <a href="">Forgot password?</a>
             </div>
+
           </div>
 
           <!-- Sign in button -->
-          <button class="btn btn-info btn-block my-4" type="submit">Login</button>
+          <button *ngIf="!registerMode" class="btn btn-info btn-block my-4" type="submit">Login</button>
+          <!-- Register in button -->
+          <button *ngIf="registerMode" class="btn btn-info btn-block my-4" type="submit">Register</button>
         </div>
         <!-- Register -->
-        <p>Not a member?
-          <a href="">Register</a>
+        <p *ngIf="!registerMode">Not a member?
+          <span (click)="registerMode = true">Register</span>
+        </p>
+        <p *ngIf="registerMode">Already register
+          <span (click)="registerMode = false" class="">Login</span>
         </p>
 
         <!-- Social login -->
@@ -49,7 +58,6 @@
         <a class="text-primary mx-2">
           <i class="fab fa-github"></i>
         </a>
-
       </form>
       <!-- Default form login -->
     </div>

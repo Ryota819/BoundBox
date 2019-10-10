@@ -1,6 +1,6 @@
 img {
-  width: 250px;
-  height: 250px;
+  width: 350px;
+  height: 350px;
   object-fit: cover;
 }
 .underline-dark {
@@ -11,4 +11,14 @@ img {
 section {
   background-color: #eee;
   padding-top: 100px;
+}
+
+.card-text {
+  /* font-size: small; */
+  margin-bottom: -5px;
+}
+
+.end {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
