@@ -7,17 +7,23 @@ import numpy as np
 import torch
 import torch.nn as nn
 import os
+import networks
 
 #model_name = os.path.abspath('kitagwa-resnet-50.h5')
 #print("model:", model_name)
-model = models.resnet50(num_classes=2)
+#model = models.resnet50(num_classes=2)
+model = networks.resnet(pretrained=False, depth=50)
+num_ftrs = model.fc.in_features
+model.fc = nn.Linear(num_ftrs, 2)
 device = torch.device('cpu')
 
 class Discriminator:
 
   def __init__(self):
+
     #self.model = KerasApp(weights='imagenet')
-    self.param = torch.load('../model/resnet-50.pth', map_location='cpu')
+    self.model = model
+    self.param = torch.load('./model/resnet-50.pth', map_location='cpu')
     self.model = model.load_state_dict(self.param, strict=False)
 
   def image_to_tensor(img):
