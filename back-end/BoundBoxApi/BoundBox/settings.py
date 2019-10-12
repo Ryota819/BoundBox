@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'boundbox',
         'USER': 'boundboxadmin',
         'PASSWORD': 'power0f2',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '',
     }
 }
