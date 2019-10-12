@@ -1,0 +1,60 @@
+<!-- Default form login -->
+<div class="container">
+  <div class="col-lg-7 offset-lg-3 col-md-9 offset-md-2 form_menu">
+    <!-- <form class="text-center border border-light"> -->
+    <form [formGroup]="authForm" (ngSubmit)="saveForm()" class="text-center border border-light">
+      <br>
+      <p *ngIf="!registerMode" class="h4 mb-4">Login</p>
+      <p *ngIf="registerMode" class="h4 mb-4">Register</p>
+      <div class="offset-2 col-8">
+        <!-- Email -->
+        <input type="email" formControlName="username" class="form-control mb-4" placeholder="Username">
+        <!-- Password -->
+        <input type="password" formControlName="password" class="form-control mb-4" placeholder="Password">
+
+        <input *ngIf="registerMode" type="email" formControlName="email" class="form-control mb-4" placeholder="Email">
+        <div *ngIf="!registerMode" class="d-flex justify-content-around p-2">
+          <div>
+            <!-- Remember me -->
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
+              <label class="custom-control-label" for="defaultLoginFormRemember">Remember me</label>
+            </div>
+          </div>
+          <div>
+            <!-- Forgot password -->
+            <a href="">Forgot password?</a>
+          </div>
+
+        </div>
+
+        <!-- Sign in button -->
+        <button *ngIf="!registerMode" class="btn btn-info btn-block my-4" type="submit">Login</button>
+        <!-- Register in button -->
+        <button *ngIf="registerMode" class="btn btn-info btn-block my-4" type="submit">Register</button>
+      </div>
+      <!-- Register -->
+
+      <p>Already register
+        <span routerLink="/auth/login">Login</span>
+      </p>
+
+      <!-- Social login
+      <p>or sign in with:</p>
+
+      <a class="text-primary mx-2">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a class="text-primary mx-2">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a class="text-primary mx-2">
+        <i class="fab fa-linkedin-in"></i>
+      </a>
+      <a class="text-primary mx-2">
+        <i class="fab fa-github"></i>
+      </a> -->
+    </form>
+    <!-- Default form login -->
+  </div>
+</div>

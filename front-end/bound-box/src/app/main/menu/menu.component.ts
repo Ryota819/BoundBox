@@ -18,7 +18,7 @@ export class MenuComponent implements OnInit {
   ngOnInit() {
     const mrToken = this.cookieService.get("mr-token");
     if (!mrToken) {
-      this.router.navigate(["/auth"]);
+      this.router.navigate(["/auth/login"]);
     } else {
       $(".nav-button").click(() => {
         $(".nav-button").toggleClass("change");
@@ -37,6 +37,6 @@ export class MenuComponent implements OnInit {
   logout() {
     this.cookieService.delete("mr-token");
     localStorage.removeItem("account");
-    this.router.navigate(["/auth"]);
+    this.router.navigate(["/auth/login"]);
   }
 }
