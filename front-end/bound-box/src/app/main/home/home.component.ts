@@ -11,7 +11,9 @@ import { DOCUMENT } from "@angular/platform-browser";
   styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
-  baseurl = "http://localhost:8000";
+  // baseurl = "http://localhost:8000";
+
+  baseUrl = "http://35.224.46.100:8000/";
   files: any = [];
   userSub: Subscription;
   account: User = new User();
