@@ -6,14 +6,15 @@ import { User } from "../../models/user";
 import { Subscription } from "rxjs/Subscription";
 import { Router } from "@angular/router";
 
+import { environment } from "../../../environments/environment";
+
 @Component({
   selector: "app-likebox",
   templateUrl: "./likebox.component.html",
   styleUrls: ["./likebox.component.css"]
 })
 export class LikeboxComponent implements OnInit {
-  // baseurl = "http://localhost:8000";
-  baseUrl = "http://35.224.46.100:8000/";
+  baseurl = environment.baseurl;
   files: any = [];
   imageSrc: string | ArrayBuffer = "";
   reader = new FileReader();

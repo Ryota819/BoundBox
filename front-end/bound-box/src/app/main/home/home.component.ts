@@ -5,15 +5,14 @@ import { User } from "../../models/user";
 import { Subscription } from "rxjs/Subscription";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { DOCUMENT } from "@angular/platform-browser";
+import { environment } from "../../../environments/environment";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
-  // baseurl = "http://localhost:8000";
-
-  baseUrl = "http://35.224.46.100:8000/";
+  baseurl = environment.baseurl;
   files: any = [];
   userSub: Subscription;
   account: User = new User();

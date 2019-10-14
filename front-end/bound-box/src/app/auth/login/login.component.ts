@@ -33,26 +33,15 @@ export class LoginComponent implements OnInit {
   }
 
   saveForm() {
-    if (!this.registerMode) {
-      this.apiService.loginUser(this.authForm.value).subscribe(
-        result => {
-          this.cookieService.set("mr-token", result["token"]);
-          console.log(result);
-          console.log(result["user"]);
-          this.global.me = result["user"];
-          this.router.navigate(["/"]);
-        },
-        error => console.log(error)
-      );
-    } else {
-      this.apiService.registerUser(this.authForm.value).subscribe(
-        result => {
-          this.router.navigate(["/"]);
-        },
-        error => {
-          alert("Emailアドレスを正しく入力してください。");
-        }
-      );
-    }
+    this.apiService.loginUser(this.authForm.value).subscribe(
+      result => {
+        this.cookieService.set("mr-token", result["token"]);
+        console.log(result);
+        console.log(result["user"]);
+        this.global.me = result["user"];
+        this.router.navigate(["/"]);
+      },
+      error => console.log(error)
+    );
   }
 }
