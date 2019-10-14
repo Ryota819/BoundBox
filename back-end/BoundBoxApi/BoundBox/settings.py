@@ -26,9 +26,9 @@ SECRET_KEY = '0q-s$+m!5jyxtct=(u8_76g2zf4xj#vm6e27s-x6j3j6m)7q4-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['35.224.46.100']
+ALLOWED_HOSTS = ['boundbox.tk']
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 
 # Application definition
