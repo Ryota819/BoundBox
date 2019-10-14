@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseurl: "https://boundbox.tk/backend/"
+  baseurl: "https://boundbox.tk/backend"
 };
