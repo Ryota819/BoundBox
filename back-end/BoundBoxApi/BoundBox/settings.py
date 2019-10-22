@@ -25,10 +25,10 @@ SECRET_KEY = '0q-s$+m!5jyxtct=(u8_76g2zf4xj#vm6e27s-x6j3j6m)7q4-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-#
-# ALLOWED_HOSTS = ['boundbox.tk']
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['boundbox.tk']
+#
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -82,23 +82,23 @@ WSGI_APPLICATION = 'BoundBox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'boundbox',
-#         'USER': 'boundboxadmin',
-#         'PASSWORD': 'power0f2',
-#         'HOST': 'postgres',
-#         'PORT': '',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'boundbox',
+        'USER': 'boundboxadmin',
+        'PASSWORD': 'power0f2',
+        'HOST': 'postgres',
+        'PORT': '',
+    }
+}
 
 # REST_FRAMEWORK = {
 #    'DEFAULT_PERMISSION_CLASSES': (
