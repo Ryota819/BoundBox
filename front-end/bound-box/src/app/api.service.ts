@@ -8,6 +8,7 @@ import { environment } from "./../environments/environment";
 export class ApiService {
   baseUrl = `${environment.baseurl}/`;
   baseImageUrl = `${this.baseUrl}api/images/`;
+  baseEmpathyUrl = `${this.baseUrl}api/empathys/`;
   token = this.cookieService.get("mr-token");
   headers = new HttpHeaders({
     "Content-Type": "application/json"
@@ -33,7 +34,6 @@ export class ApiService {
   }
 
   upload(formData) {
-    const body = JSON.stringify(formData);
     return this.httpClient.post<any>(`${this.baseImageUrl}`, formData, {
       headers: this.getMultiAuthHeaders()
     });
@@ -45,8 +45,23 @@ export class ApiService {
     return this.httpClient.get<any>(`${this.baseImageUrl}?owner=${user}`);
   }
 
+  getLikeImage(user) {
+    return this.httpClient.get<any>(
+      `${this.baseEmpathyUrl}?empathizer=${user}`
+    );
+  }
+
   getNextImage(next) {
     return this.httpClient.get<any>(next);
+  }
+  deleteImage(id) {
+    return this.httpClient.delete(`${this.baseImageUrl}?file=${id}`);
+  }
+  createEmpathy(formData) {
+    const body = JSON.stringify(formData);
+    return this.httpClient.post<any>(`${this.baseEmpathyUrl}`, body, {
+      headers: this.getAuthHeaders()
+    });
   }
 
   getAuthHeaders() {

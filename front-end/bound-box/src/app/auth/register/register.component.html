@@ -1,4 +1,4 @@
-<!-- Default form login -->
+<!-- Default form Register -->
 <div class="container">
   <div class="col-lg-7 offset-lg-3 col-md-9 offset-md-2 form_menu">
     <!-- <form class="text-center border border-light"> -->
@@ -6,37 +6,35 @@
       <br>
       <p class="h4 mb-4">Register</p>
       <div class="offset-2 col-8">
-        <!-- Email -->
-        <input type="email" formControlName="username" class="form-control mb-4" placeholder="Username">
+        <!-- Username -->
+        <div class="alert-danger" *ngIf="error?.error?.username" style="font-size: small">
+          {{ error.error.username }}
+        </div>
+        <input type="text" formControlName="username" class="form-control mb-4" placeholder="Username">
+
         <!-- Password -->
+        <div class="alert-danger" *ngIf="error?.error?.password" style="font-size: small">
+          {{ error.error.password }}
+        </div>
         <input type="password" formControlName="password" class="form-control mb-4" placeholder="Password">
 
+        <!-- Email -->
+        <div class="alert-danger" *ngIf="error?.error?.email" style="font-size: small">
+          {{ error.error.email }}
+        </div>
         <input type="email" formControlName="email" class="form-control mb-4" placeholder="Email">
 
+
+
         <!-- Register in button -->
-        <button class="btn btn-info btn-block my-4" type="submit">Register</button>
+        <button class="btn btn-info btn-block my-4" type="submit"
+          [disabled]="authForm.invalid || loading">Register</button>
       </div>
       <!-- Register -->
 
       <p>Already register:
-        <span routerLink="/auth/login">Login</span>
+        <a routerLink="/auth/login">Login</a>
       </p>
-
-      <!-- Social login
-      <p>or sign in with:</p>
-
-      <a class="text-primary mx-2">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a class="text-primary mx-2">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a class="text-primary mx-2">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-      <a class="text-primary mx-2">
-        <i class="fab fa-github"></i>
-      </a> -->
     </form>
     <!-- Default form login -->
   </div>

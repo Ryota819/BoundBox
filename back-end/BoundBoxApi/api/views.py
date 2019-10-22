@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status
-from django.contrib.auth.models import User
-from .models import Image, Comment, Empathy
+from .models import Image, Comment, Empathy ,CustomUser
 from .serializers import UserSerializer, ImageSerializer, CommentSerializer, EmpathySerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import action
@@ -12,10 +11,11 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.pagination import LimitOffsetPagination
+from .discriminator_pytorch import Discriminator
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 
@@ -42,24 +42,31 @@ class UserViewSet(viewsets.ModelViewSet):
 class FileUploadView(APIView):
     parser_class = (FileUploadParser,)
     pagination_class = LimitOffsetPagination
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        user = User.objects.get(id=request.data['owner'])
+        user = CustomUser.objects.get(id=request.data['owner'])
         file_serializer = ImageSerializer(data=request.data)
         if file_serializer.is_valid():
             # TODO 分類ロジックでtagをつける。
-            tag = "YUZU"
+            discriminator = Discriminator()
+            kita_result = discriminator.predict(request.data['file'])
+            if (kita_result == True):
+                tag = "KITA"
+            else:
+                tag = "YUZU"
             file_serializer.save(owner=user, tag=tag)
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, *args, **kwargs):
-        if "query_params" in request.GET:
+        if "owner" in request.GET:
             get_data = request.query_params
             image = Image.objects.filter(owner=get_data['owner'], viewable='True').order_by('timestamp').reverse()
         else:
-            image = Image.objects.all().order_by('timestamp').reverse()
+            image = Image.objects.filter(viewable='True').all().order_by('timestamp').reverse()
 
         pagenator = LimitOffsetPagination()
         result_page = pagenator.paginate_queryset(image, request)
@@ -68,27 +75,64 @@ class FileUploadView(APIView):
 
         return Response(response, status=status.HTTP_200_OK)
 
+    def delete(self, request):
+        image = Image.objects.get(pk=request.query_params['file'])
+        image.viewable = False
+        image.save()
+        response = {'message': 'delete image'}
+        return Response(response, status=status.HTTP_200_OK)
+
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     parser_class = (FileUploadParser,)
     serializer_class = CommentSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
 
 
 class EmpathyViewSet(viewsets.ModelViewSet):
     queryset = Empathy.objects.all()
     serializer_class = EmpathySerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    pagination_class = LimitOffsetPagination
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes = (IsAuthenticated,)
+
+    def create(self, request):
+        try:
+            empathy = Empathy.objects.get(image_id=request.data['image'], empathizer_id=request.data['empathizer'])
+            empathy.delete()
+            response = {'message': 'delete'}
+            return Response(response, status=status.HTTP_201_CREATED)
+        except Empathy.DoesNotExist:
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                serializer.save(image_id=request.data['image'], empathizer_id=request.data['empathizer'])
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def list(self, request, *args, **kwargs):
+        if "empathizer" in request.GET:
+            get_data = request.query_params
+            empathies = Empathy.objects.filter(empathizer=get_data['empathizer']).order_by('timestamp').reverse()
+        else:
+            empathies = Empathy.objects.all().order_by('timestamp').reverse()
+
+        pagenator = LimitOffsetPagination()
+        result_page = pagenator.paginate_queryset(empathies, request)
+        serializer = EmpathySerializer(result_page, many=True)
+        response = {'message': 'get empathy', 'result': serializer.data, "next": pagenator.get_next_link()}
+
+        return Response(response, status=status.HTTP_200_OK)
 
 
 class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
-        user = User.objects.get(id=token.user_id)
+        user = CustomUser.objects.get(id=token.user_id)
         serializer = UserSerializer(user, many=False)
         return Response({'token': token.key, 'user': serializer.data})
 

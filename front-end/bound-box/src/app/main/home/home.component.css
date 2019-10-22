@@ -13,9 +13,8 @@ section {
   padding-top: 100px;
 }
 
-.card-text {
-  /* font-size: small; */
-  margin-bottom: -5px;
+i.far {
+  -webkit-text-stroke-width: 0.5rem;
 }
 
 .end {

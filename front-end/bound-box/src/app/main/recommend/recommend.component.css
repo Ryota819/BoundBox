@@ -1,0 +1,23 @@
+img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+}
+.underline-dark {
+  width: 150px;
+  border: 3px solid #888;
+  margin: auto;
+}
+section {
+  background-color: #eee;
+  padding-top: 100px;
+}
+
+i.far {
+  -webkit-text-stroke-width: 0.5rem;
+}
+
+.end {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

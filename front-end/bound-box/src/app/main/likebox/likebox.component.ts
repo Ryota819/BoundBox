@@ -26,8 +26,7 @@ export class LikeboxComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private formBuilder: FormBuilder,
-    private global: GlobalService,
-    private router: Router
+    private global: GlobalService
   ) {}
 
   ngOnInit() {
@@ -42,7 +41,6 @@ export class LikeboxComponent implements OnInit {
       res => {
         this.files = res["result"];
         this.next = res["next"];
-        console.log(res);
       },
       err => {}
     );
@@ -75,15 +73,15 @@ export class LikeboxComponent implements OnInit {
       formData.append("file", this.form.get("profile").value);
       formData.append("owner", this.form.get("user").value);
       formData.append("viewable", "true");
-      this.apiService
-        .upload(formData)
-        .subscribe(res => console.log(res), err => console.log(err));
+      this.apiService.upload(formData).subscribe(
+        res => {
+          this.files.unshift(res);
+        },
+        err => console.log(err)
+      );
     }
   }
 
-  // deleteAttachment(index) {
-  //   this.files.splice(index, 1);
-  // }
   @HostListener("window:scroll", ["$event"])
   onWindowScroll() {
     if (window.innerHeight + window.scrollY === document.body.scrollHeight) {
@@ -91,10 +89,17 @@ export class LikeboxComponent implements OnInit {
         res => {
           Array.prototype.push.apply(this.files, res["result"]);
           this.next = res["next"];
-          console.log(res["next"]);
         },
         err => {}
       );
     }
+  }
+  deleteImage(id, index) {
+    this.apiService.deleteImage(id).subscribe(
+      res => {
+        this.files.splice(index, 1);
+      },
+      err => {}
+    );
   }
 }

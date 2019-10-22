@@ -1,3 +1,51 @@
-<p>
-  recommend works!
-</p>
+<section>
+  <div class="container-fluid">
+    <!-- title -->
+    <div class="row text-muted text-center">
+      <div class="col">
+        <h1 class="display-4 mb-2">Like Box</h1>
+        <div class="underline-dark"></div>
+      </div>
+    </div>
+    <!-- end of title -->
+    <ul class="list-inline text-center text-uppercase font-weight-bold my-4">
+      <li class="list-inline-item gallery-list-item active-item" data-filter="all">All<span
+          class="mx-md-5 mx-3 text-muted">/</span>
+      </li>
+      <li class="list-inline-item gallery-list-item" data-filter="YUZU">ゆず<span class="mx-md-5 mx-3 text-muted">/</span>
+      </li>
+      <li class="list-inline-item gallery-list-item" data-filter="KITA">北川悠仁<span
+          class="mx-md-5 mx-3 text-muted">/</span>
+      </li>
+      <li class="list-inline-item gallery-list-item" data-filter="IWA">岩沢厚治
+      </li>
+    </ul>
+    <div class="container-fluid">
+      <div class="d-flex flex-wrap justify-content-center">
+        <div *ngFor="let file of files;let i= index">
+          <div class="filter {{ file.image.tag }}">
+            <div class="card">
+              <img src="{{ baseurl }}{{ file.image.file }}" width="600">
+              <div class="card-header">
+                <p class="text-secondary" style="margin-bottom: 0"><i class="far fa-comment-alt fa-lg"></i>
+                  {{ file.image.no_of_comments }} <span (click)='sendLikeIt(file.image.id, i)'><i
+                      class="far fa-heart fa-lg"></i></span>
+                  {{ file.image.no_of_empathy }}</p>
+              </div>
+              <!-- <form [formGroup]="commentForm" (ngSubmit)="saveForm()" class="text-center">
+                <input type="text" formControlName="comment" class="form-control" placeholder="コメントする">
+              </form> -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="next == null">
+      <div class="end text-center">
+        <p>全ての思い出を読み込みました。</p>
+      </div>
+    </div>
+
+  </div>
+</section>

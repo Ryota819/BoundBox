@@ -25,10 +25,10 @@ SECRET_KEY = '0q-s$+m!5jyxtct=(u8_76g2zf4xj#vm6e27s-x6j3j6m)7q4-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#
+# ALLOWED_HOSTS = ['boundbox.tk']
 
-ALLOWED_HOSTS = ['boundbox.tk']
-
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
     'corsheaders',
     'api'
 ]
@@ -81,23 +82,23 @@ WSGI_APPLICATION = 'BoundBox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'boundbox',
-        'USER': 'boundboxadmin',
-        'PASSWORD': 'power0f2',
-        'HOST': 'postgres',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'boundbox',
+#         'USER': 'boundboxadmin',
+#         'PASSWORD': 'power0f2',
+#         'HOST': 'postgres',
+#         'PORT': '',
+#     }
+# }
 
 # REST_FRAMEWORK = {
 #    'DEFAULT_PERMISSION_CLASSES': (
@@ -106,7 +107,8 @@ DATABASES = {
 # }
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 30
+    'PAGE_SIZE': 30,
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -126,6 +128,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -134,7 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_USER_MODEL = 'api.CustomUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/

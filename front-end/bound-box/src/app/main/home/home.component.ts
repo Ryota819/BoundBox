@@ -1,10 +1,9 @@
-import { Component, OnInit, Inject, HostListener } from "@angular/core";
+import { Component, OnInit, HostListener } from "@angular/core";
 import { GlobalService } from "../../global.service";
 import { ApiService } from "../../api.service";
 import { User } from "../../models/user";
 import { Subscription } from "rxjs/Subscription";
-import { FormGroup, FormBuilder } from "@angular/forms";
-import { DOCUMENT } from "@angular/platform-browser";
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { environment } from "../../../environments/environment";
 @Component({
   selector: "app-home",
@@ -18,7 +17,7 @@ export class HomeComponent implements OnInit {
   account: User = new User();
   form: FormGroup;
   next: string = "";
-
+  emphathyInput: FormGroup;
   constructor(
     private apiService: ApiService,
     private global: GlobalService,
@@ -36,7 +35,6 @@ export class HomeComponent implements OnInit {
       res => {
         this.files = res["result"];
         this.next = res["next"];
-        console.log(res);
       },
       err => {}
     );
@@ -68,10 +66,28 @@ export class HomeComponent implements OnInit {
         res => {
           Array.prototype.push.apply(this.files, res["result"]);
           this.next = res["next"];
-          console.log(res["next"]);
         },
         err => {}
       );
     }
+  }
+  sendLikeIt(id, index) {
+    this.emphathyInput = this.formBuilder.group({
+      image: [id],
+      empathizer: [this.form.get("user").value],
+      kind: ["LIKE"]
+    });
+    this.apiService.createEmpathy(this.emphathyInput.value).subscribe(
+      res => {
+        if (res.message) {
+          // 追加
+          this.files[index].no_of_empathy = this.files[index].no_of_empathy - 1;
+        } else {
+          // 削除
+          this.files[index].no_of_empathy = this.files[index].no_of_empathy + 1;
+        }
+      },
+      err => console.log(err)
+    );
   }
 }

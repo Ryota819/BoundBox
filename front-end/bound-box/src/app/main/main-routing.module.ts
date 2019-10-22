@@ -13,8 +13,8 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "home", pathMatch: "full" },
       { path: "home", component: HomeComponent },
-      { path: "recommend", component: RecommendComponent },
-      { path: "likebox", component: LikeboxComponent },
+      { path: "likebox", component: RecommendComponent },
+      { path: "mybox", component: LikeboxComponent },
       { path: "profile", component: ProfileComponent }
     ]
   }

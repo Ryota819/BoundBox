@@ -9,7 +9,7 @@ img {
   object-fit: cover;
 }
 .uploadfilecontainer {
-  background-image: url("../../../assets/cloud-2044823_960_720.png");
+  background-image: url("../../../assets/upload.png");
   background-repeat: no-repeat;
   background-size: 100px;
   background-position: center;
@@ -22,7 +22,7 @@ img {
 
 .uploadfilecontainer:hover {
   cursor: pointer;
-  background-color: #9ecbec !important;
+  background-color: #fff !important;
   opacity: 0.8;
 }
 

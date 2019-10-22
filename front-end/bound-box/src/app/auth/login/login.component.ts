@@ -1,5 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder
+} from "@angular/forms";
 import { ApiService } from "../../api.service";
 
 import { Router } from "@angular/router";
@@ -12,20 +17,26 @@ import { GlobalService } from "../../global.service";
   styleUrls: ["./login.component.css"]
 })
 export class LoginComponent implements OnInit {
-  authForm = new FormGroup({
-    username: new FormControl(""),
-    password: new FormControl(""),
-    email: new FormControl("")
-  });
-  registerMode = false;
+  authForm: FormGroup;
+  loading: boolean;
+  error: string;
+
   constructor(
     private apiService: ApiService,
     private cookieService: CookieService,
     private global: GlobalService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private fb: FormBuilder
+  ) {
+    this.authForm = this.fb.group({
+      username: new FormControl("", Validators.required),
+      password: new FormControl("", Validators.required)
+    });
+  }
 
   ngOnInit() {
+    this.loading = false;
+    this.error = "";
     const mrToken = this.cookieService.get("mr-token");
     if (mrToken) {
       this.router.navigate(["/"]);
@@ -33,15 +44,18 @@ export class LoginComponent implements OnInit {
   }
 
   saveForm() {
+    this.loading = true;
     this.apiService.loginUser(this.authForm.value).subscribe(
       result => {
+        this.loading = false;
         this.cookieService.set("mr-token", result["token"]);
-        console.log(result);
-        console.log(result["user"]);
         this.global.me = result["user"];
         this.router.navigate(["/"]);
       },
-      error => console.log(error)
+      error => {
+        this.loading = false;
+        this.error = error;
+      }
     );
   }
 }

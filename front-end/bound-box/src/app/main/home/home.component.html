@@ -1,12 +1,12 @@
 <section>
   <div class="container-fluid">
     <!-- title -->
-    <div class="row text-muted text-center">
+    <!-- <div class="row text-muted text-center">
       <div class="col">
-        <h1 class="display-4 mb-2">Gallery</h1>
+        <h1 class="display-4 mb-2">Bound Box</h1>
         <div class="underline-dark"></div>
       </div>
-    </div>
+    </div> -->
     <!-- end of title -->
     <ul class="list-inline text-center text-uppercase font-weight-bold my-4">
       <li class="list-inline-item gallery-list-item active-item" data-filter="all">All<span
@@ -25,12 +25,17 @@
         <div *ngFor="let file of files;let i= index">
           <div class="filter {{ file.tag }}">
             <div class="card">
-              <img src="{{ baseurl }}{{file.file}}" width="600">
-              <div class="card-body">
-                <p class="card-text text-secondary"><i class="far fa-comment-alt"></i> {{file.no_of_comments}} <i
-                    class="far fa-heart"></i> {{file.no_of_empathy}}</p>
-                <p class="card-text"></p>
+              <img src="{{ baseurl }}{{ file.file }}" width="600">
+              <div class="card-header">
+                <p class="text-secondary" style="margin-bottom: 0"><i class="far fa-comment-alt fa-lg"></i>
+                  {{ file.no_of_comments }} <span (click)='sendLikeIt(file.id, i)'><i
+                      class="far fa-heart fa-lg"></i></span>
+                  {{ file.no_of_empathy }}</p>
               </div>
+              <!-- <form [formGroup]="commentForm" (ngSubmit)="saveForm()" class="text-center">
+                <input type="text" formControlName="comment" class="form-control" placeholder="コメントする">
+              </form> -->
+
             </div>
           </div>
         </div>

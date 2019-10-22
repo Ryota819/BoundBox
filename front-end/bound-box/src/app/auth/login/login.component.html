@@ -4,14 +4,14 @@
     <!-- <form class="text-center border border-light"> -->
     <form [formGroup]="authForm" (ngSubmit)="saveForm()" class="text-center border border-light">
       <br>
-      <p *ngIf="!registerMode" class="h4 mb-4">Login</p>
+      <p class="h4 mb-4">Login</p>
       <div class="offset-2 col-8">
-        <!-- Email -->
-        <input type="email" formControlName="username" class="form-control mb-4" placeholder="Username">
+        <!-- Username -->
+        <input type="text" formControlName="username" class="form-control mb-4" placeholder="Username">
         <!-- Password -->
         <input type="password" formControlName="password" class="form-control mb-4" placeholder="Password">
 
-        <div *ngIf="!registerMode" class="d-flex justify-content-around p-2">
+        <div class="d-flex justify-content-around p-2">
           <div>
             <!-- Remember me -->
             <div class="custom-control custom-checkbox">
@@ -25,13 +25,17 @@
           </div>
 
         </div>
+        <div class="alert-danger" *ngIf="error" style="font-size: small">
+          ユーザー名かパスワードが違います。
+        </div>
 
         <!-- Sign in button -->
-        <button class="btn btn-info btn-block my-4" type="submit">Login</button>
+        <button class="btn btn-info btn-block my-4" type="submit"
+          [disabled]="authForm.invalid || loading">Login</button>
       </div>
       <!-- Register -->
       <p>Not a member?
-        <span routerLink="/auth/register">Register</span>
+        <a routerLink="/auth/register">Register</a>
       </p>
 
       <!-- Social login

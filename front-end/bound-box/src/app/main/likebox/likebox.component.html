@@ -25,28 +25,26 @@
       <div *ngFor="let file of files;let i= index">
         <div class="filter {{ file.tag }}">
           <div class="card">
-            <img src="{{ baseurl }}{{file.file}}" width="600">
-            <div class="card-body">
-              <p class="card-text text-secondary"><i class="far fa-comment-alt"></i> {{file.no_of_comments}} <i
-                  class="far fa-heart"></i> {{file.no_of_empathy}}</p>
-              <p class="card-text"></p>
+            <img src="{{ baseurl }}{{ file.file }}" width="600">
+            <div class="card-header">
+              <p class="text-secondary" style="margin-bottom: 0"><i class="far fa-comment-alt fa-lg"></i>
+                {{ file.no_of_comments }} <i class="far fa-heart fa-lg"></i>
+                {{ file.no_of_empathy }} <span (click)='deleteImage(file.id, i)' style="float:right"><i
+                    class="far fa-trash-alt fa-lg"></i></span></p>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid" *ngIf="next == null">
+  <div class="container-fluid" *ngIf="files.length == 0">
+    <div class="end text-center">
+      <p>お気に入りの写真をシェアしよう！</p>
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="next == null && files.length != 0">
     <div class="end text-center">
       <p>全ての思い出を読み込みました。</p>
     </div>
   </div>
 </section>
-
-
-<!-- <div class="files-list" *ngFor="let file of files;let i= index">
-  <p> {{ file.file }} </p>
-  <button class="delete-file" (click)="deleteAttachment(i)">
-    <img src="../../../assets/Recycle_Bin_Full.png">
-  </button>
-</div> -->
