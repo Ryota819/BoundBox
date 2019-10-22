@@ -17,7 +17,7 @@ import { CookieService } from "ngx-cookie-service";
 export class RegisterComponent implements OnInit {
   authForm: FormGroup;
   loading: boolean;
-  error: string;
+  error;
 
   constructor(
     private apiService: ApiService,
@@ -34,7 +34,6 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.loading = false;
-    this.error = "";
     const mrToken = this.cookieService.get("mr-token");
     if (mrToken) {
       this.router.navigate(["/"]);
@@ -51,7 +50,6 @@ export class RegisterComponent implements OnInit {
       error => {
         this.loading = false;
         this.error = error;
-        console.log(error);
       }
     );
   }
