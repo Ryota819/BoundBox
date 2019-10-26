@@ -12,6 +12,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.pagination import LimitOffsetPagination
 from .discriminator_pytorch import Discriminator
+from django.db import reset_queries
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -70,6 +71,7 @@ class FileUploadView(APIView):
                 viewable = False
 
             file_serializer.save(owner=user, tag=tag, viewable=viewable)
+            reset_queries()
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -85,7 +87,7 @@ class FileUploadView(APIView):
         result_page = pagenator.paginate_queryset(image, request)
         serializer = ImageSerializer(result_page, many=True)
         response = {'message': 'get image', 'result': serializer.data, "next": pagenator.get_next_link()}
-
+        reset_queries()
         return Response(response, status=status.HTTP_200_OK)
 
     def delete(self, request):
@@ -93,6 +95,7 @@ class FileUploadView(APIView):
         image.viewable = False
         image.save()
         response = {'message': 'delete image'}
+        reset_queries()
         return Response(response, status=status.HTTP_200_OK)
 
 
@@ -117,11 +120,13 @@ class EmpathyViewSet(viewsets.ModelViewSet):
             empathy = Empathy.objects.get(image_id=request.data['image'], empathizer_id=request.data['empathizer'])
             empathy.delete()
             response = {'message': 'delete'}
+            reset_queries()
             return Response(response, status=status.HTTP_201_CREATED)
         except Empathy.DoesNotExist:
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.save(image_id=request.data['image'], empathizer_id=request.data['empathizer'])
+                reset_queries()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -137,6 +142,7 @@ class EmpathyViewSet(viewsets.ModelViewSet):
         result_page = pagenator.paginate_queryset(empathies, request)
         serializer = EmpathySerializer(result_page, many=True)
         response = {'message': 'get empathy', 'result': serializer.data, "next": pagenator.get_next_link()}
+        reset_queries()
 
         return Response(response, status=status.HTTP_200_OK)
 
@@ -147,5 +153,6 @@ class CustomObtainAuthToken(ObtainAuthToken):
         token = Token.objects.get(key=response.data['token'])
         user = CustomUser.objects.get(id=token.user_id)
         serializer = UserSerializer(user, many=False)
+        reset_queries()
         return Response({'token': token.key, 'user': serializer.data})
 
