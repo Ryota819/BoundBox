@@ -4,7 +4,7 @@
     <div class="row text-muted text-center">
       <div class="col m-4">
         <div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
-          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+          <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)" [disabled]="uploading">
         </div>
       </div>
     </div>

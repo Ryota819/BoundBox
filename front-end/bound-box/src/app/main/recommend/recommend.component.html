@@ -28,14 +28,13 @@
               <img src="{{ baseurl }}{{ file.image.file }}" width="600">
               <div class="card-header">
                 <p class="text-secondary" style="margin-bottom: 0"><i class="far fa-comment-alt fa-lg"></i>
-                  {{ file.image.no_of_comments }} <span (click)='sendLikeIt(file.image.id, i)'><i
+                  {{ file.image.no_of_comments }} <span class="text-danger" (click)='sendLikeIt(file.image.id, i)'><i
                       class="far fa-heart fa-lg"></i></span>
                   {{ file.image.no_of_empathy }}</p>
               </div>
               <!-- <form [formGroup]="commentForm" (ngSubmit)="saveForm()" class="text-center">
                 <input type="text" formControlName="comment" class="form-control" placeholder="コメントする">
               </form> -->
-
             </div>
           </div>
         </div>
@@ -43,7 +42,7 @@
     </div>
     <div class="container-fluid" *ngIf="next == null">
       <div class="end text-center">
-        <p>全ての思い出を読み込みました。</p>
+        <p>お気に入りの写真を探そう！</p>
       </div>
     </div>
 

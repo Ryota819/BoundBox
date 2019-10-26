@@ -16,6 +16,7 @@ class Image(models.Model):
     owner = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     timestamp = models.DateTimeField(default=timezone.now)
     viewable = models.BooleanField()
+    checked = models.BooleanField(default=False)
 
     def __str__(self):
         return self.file.name

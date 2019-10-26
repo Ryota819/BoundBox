@@ -21,3 +21,4 @@ class Tag(Choosable):
     YUZU = 1
     KITA = 2
     IWA = 3
+    Other = 4

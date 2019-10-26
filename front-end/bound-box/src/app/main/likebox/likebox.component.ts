@@ -22,6 +22,7 @@ export class LikeboxComponent implements OnInit {
   account: User = new User();
   userSub: Subscription;
   next: string = "";
+  uploading: boolean;
 
   constructor(
     private apiService: ApiService,
@@ -34,6 +35,7 @@ export class LikeboxComponent implements OnInit {
       profile: [""],
       user: [""]
     });
+    this.uploading = false;
     this.userSub = this.global.user.subscribe(me => (this.account = me));
     this.global.me = JSON.parse(localStorage.getItem("account"));
     this.form.get("user").setValue(this.account.id);
@@ -66,6 +68,7 @@ export class LikeboxComponent implements OnInit {
   }
 
   uploadFile(event) {
+    this.uploading = true;
     for (let index = 0; index < event.length; index++) {
       const element = event[index];
       this.form.get("profile").setValue(element);
@@ -76,8 +79,16 @@ export class LikeboxComponent implements OnInit {
       this.apiService.upload(formData).subscribe(
         res => {
           this.files.unshift(res);
+          if (index == event.length - 1) {
+            this.uploading = false;
+          }
         },
-        err => console.log(err)
+        err => {
+          console.log(err);
+          if (index == event.length - 1) {
+            this.uploading = false;
+          }
+        }
       );
     }
   }

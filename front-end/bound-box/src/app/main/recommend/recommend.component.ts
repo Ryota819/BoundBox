@@ -74,4 +74,17 @@ export class RecommendComponent implements OnInit {
       );
     }
   }
+  sendLikeIt(id, index) {
+    this.emphathyInput = this.formBuilder.group({
+      image: [id],
+      empathizer: [this.form.get("user").value],
+      kind: ["LIKE"]
+    });
+    this.apiService.createEmpathy(this.emphathyInput.value).subscribe(
+      res => {
+        this.files.splice(index, 1);
+      },
+      err => console.log(err)
+    );
+  }
 }
