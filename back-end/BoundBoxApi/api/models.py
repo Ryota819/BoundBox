@@ -5,6 +5,9 @@ from django.utils import timezone
 from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
+# add
+from .discriminator_pytorch import Discriminator
+
 
 class CustomUser(AbstractUser):
     password = models.CharField(_('password'), max_length=128, validators=[MinLengthValidator(8)])
@@ -17,6 +20,9 @@ class Image(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     viewable = models.BooleanField()
     checked = models.BooleanField(default=False)
+    # add
+    discriminator_kita = Discriminator('/api/model/kitagawa/resnet-50.pth')
+    discriminator_iwa = Discriminator('/api/model/iwasawa/resnet-50.pth')
 
     def __str__(self):
         return self.file.name
@@ -46,6 +52,28 @@ class Image(models.Model):
         for empathy in empathys:
             empathizers.append(empathy.empathizer)
         return empathizers
+
+    # 追加
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        kita_result = self.discriminator_kita.predict(self.file)
+        iwa_result = self.discriminator_iwa.predict(self.file)
+        self.viewable = True
+        if (kita_result == True and iwa_result == True):
+            self.tag = "YUZU"
+            print(self.tag)
+        elif (kita_result == True and iwa_result == False):
+            self.tag = "KITA"
+            print(self.tag)
+        elif (kita_result == False and iwa_result == True):
+            self.tag = "IWA"
+            print(self.tag)
+        else:
+            self.tag = "OTHER"
+            print(self.tag)
+            self.viewable = False
+
+        super(Image, self).save()
 
 
 class Empathy(models.Model):

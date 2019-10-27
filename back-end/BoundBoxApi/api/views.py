@@ -49,28 +49,29 @@ class FileUploadView(APIView):
     def post(self, request, *args, **kwargs):
         user = CustomUser.objects.get(id=request.data['owner'])
         file_serializer = ImageSerializer(data=request.data)
-        viewable = True
+        # viewable = True
         if file_serializer.is_valid():
             # TODO 分類ロジックでtagをつける。
-            discriminator_kita = Discriminator('/api/model/kitagawa/resnet-50.pth')
-            kita_result = discriminator_kita.predict(request.data['file'])
-            discriminator_iwa = Discriminator('/api/model/iwasawa/resnet-50.pth')
-            iwa_result = discriminator_iwa.predict(request.data['file'])
-            if (kita_result == True and iwa_result == True):
-                tag = "YUZU"
-                print(tag)
-            elif (kita_result == True and iwa_result == False):
-                tag = "KITA"
-                print(tag)
-            elif (kita_result == False and iwa_result == True):
-                tag = "IWA"
-                print(tag)
-            else:
-                tag = "OTHER"
-                print(tag)
-                viewable = False
+            # discriminator_kita = Discriminator('/api/model/kitagawa/resnet-50.pth')
+            # kita_result = discriminator_kita.predict(request.data['file'])
+            # discriminator_iwa = Discriminator('/api/model/iwasawa/resnet-50.pth')
+            # iwa_result = discriminator_iwa.predict(request.data['file'])
+            # if (kita_result == True and iwa_result == True):
+            #     tag = "YUZU"
+            #     print(tag)
+            # elif (kita_result == True and iwa_result == False):
+            #     tag = "KITA"
+            #     print(tag)
+            # elif (kita_result == False and iwa_result == True):
+            #     tag = "IWA"
+            #     print(tag)
+            # else:
+            #     tag = "OTHER"
+            #     print(tag)
+            #     viewable = False
 
-            file_serializer.save(owner=user, tag=tag, viewable=viewable)
+            # file_serializer.save(owner=user, tag=tag, viewable=viewable)
+            file_serializer.save(owner=user)
             reset_queries()
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
         else:
