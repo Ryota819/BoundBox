@@ -6,9 +6,9 @@ import { environment } from "./../environments/environment";
   providedIn: "root"
 })
 export class ApiService {
-  baseUrl = `${environment.baseurl}/`;
-  baseImageUrl = `${this.baseUrl}api/images/`;
-  baseEmpathyUrl = `${this.baseUrl}api/empathys/`;
+  baseUrl = `${environment.baseurl}`;
+  baseImageUrl = `${this.baseUrl}/api/images/`;
+  baseEmpathyUrl = `${this.baseUrl}/api/empathys/`;
   token = this.cookieService.get("mr-token");
   headers = new HttpHeaders({
     "Content-Type": "application/json"
@@ -21,14 +21,14 @@ export class ApiService {
 
   loginUser(authData) {
     const body = JSON.stringify(authData);
-    return this.httpClient.post(`${this.baseUrl}api/auth/`, body, {
+    return this.httpClient.post(`${this.baseUrl}/api/auth/`, body, {
       headers: this.getAuthHeaders()
     });
   }
 
   registerUser(authData) {
     const body = JSON.stringify(authData);
-    return this.httpClient.post(`${this.baseUrl}api/users/`, body, {
+    return this.httpClient.post(`${this.baseUrl}/api/users/`, body, {
       headers: this.getAuthHeaders()
     });
   }
@@ -52,7 +52,7 @@ export class ApiService {
   }
 
   getNextImage(next) {
-    return this.httpClient.get<any>(next);
+    return this.httpClient.get<any>(`${this.baseUrl}${next}`);
   }
   deleteImage(id) {
     return this.httpClient.delete(`${this.baseImageUrl}?file=${id}`);

@@ -14,6 +14,10 @@ from rest_framework.pagination import LimitOffsetPagination
 from .discriminator_pytorch import Discriminator
 from django.db import reset_queries
 
+from urllib import parse
+
+from django.utils.encoding import force_str
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()
@@ -87,7 +91,7 @@ class FileUploadView(APIView):
         pagenator = LimitOffsetPagination()
         result_page = pagenator.paginate_queryset(image, request)
         serializer = ImageSerializer(result_page, many=True)
-        response = {'message': 'get image', 'result': serializer.data, "next": pagenator.get_next_link()}
+        response = {'message': 'get image', 'result': serializer.data, "next": remove_query_param(pagenator.get_next_link(),'')}
         reset_queries()
         return Response(response, status=status.HTTP_200_OK)
 
@@ -142,7 +146,7 @@ class EmpathyViewSet(viewsets.ModelViewSet):
         pagenator = LimitOffsetPagination()
         result_page = pagenator.paginate_queryset(empathies, request)
         serializer = EmpathySerializer(result_page, many=True)
-        response = {'message': 'get empathy', 'result': serializer.data, "next": pagenator.get_next_link()}
+        response = {'message': 'get empathy', 'result': serializer.data, "next": remove_query_param(pagenator.get_next_link(),'')}
         reset_queries()
 
         return Response(response, status=status.HTTP_200_OK)
@@ -157,3 +161,15 @@ class CustomObtainAuthToken(ObtainAuthToken):
         reset_queries()
         return Response({'token': token.key, 'user': serializer.data})
 
+def remove_query_param(url, key):
+    """
+    Given a URL and a key/val pair, remove an item in the query
+    parameters of the URL, and return the new URL.
+    """
+    (scheme, netloc, path, query, fragment) = parse.urlsplit(force_str(url))
+    query_dict = parse.parse_qs(query, keep_blank_values=True)
+    # query_dict.pop(key, None)
+    scheme = ''
+    netloc = ''
+    query = parse.urlencode(sorted(list(query_dict.items())), doseq=True)
+    return parse.urlunsplit((scheme, netloc, path, query, fragment))

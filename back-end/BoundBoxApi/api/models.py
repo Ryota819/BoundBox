@@ -61,16 +61,12 @@ class Image(models.Model):
         self.viewable = True
         if (kita_result == True and iwa_result == True):
             self.tag = "YUZU"
-            print(self.tag)
         elif (kita_result == True and iwa_result == False):
             self.tag = "KITA"
-            print(self.tag)
         elif (kita_result == False and iwa_result == True):
             self.tag = "IWA"
-            print(self.tag)
         else:
             self.tag = "OTHER"
-            print(self.tag)
             self.viewable = False
 
         super(Image, self).save()
