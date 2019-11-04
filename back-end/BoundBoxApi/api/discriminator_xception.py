@@ -18,7 +18,7 @@ class Discriminator:
     def __init__(self, path, mean, std):
         self.model = xception(pretrained=False)
         num_ftrs = self.model.last_linear.in_features
-        self.model.last_linear = nn.Linear(num_ftrs, 2)
+        self.model.last_linear = nn.Linear(num_ftrs, 4)
         device = torch.device('cpu')
         self.mean = mean
         self.std = std
@@ -59,11 +59,7 @@ class Discriminator:
             # change
             preds_tensor = F.softmax(output, dim=1)
             # end of change
-            print(preds_tensor)
 
-            if (np.float(preds_tensor.tolist()[0][0]) > 0.5):
-                result = True
-            else:
-                result = False
-            print(result)
-        return result
+            print(preds_tensor.tolist()[0])
+
+        return preds_tensor[0].argmax()

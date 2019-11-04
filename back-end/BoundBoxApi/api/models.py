@@ -22,12 +22,15 @@ class Image(models.Model):
     viewable = models.BooleanField()
     checked = models.BooleanField(default=False)
     # add
-    kita_mean = [0.49297256026361114, 0.4974875424166868, 0.5249390878377942]
-    kita_std = [0.26663833485005356, 0.2701370696494548, 0.2788614149839678]
-    iwa_mean = [0.45697290401600527, 0.46483589818332716, 0.49824474234682764]
-    iwa_std = [0.25909249960699154, 0.2629111357014475, 0.2727926945783674]
-    discriminator_kita = xcepDscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
-    discriminator_iwa = xcepDscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
+    # kita_mean = [0.49297256026361114, 0.4974875424166868, 0.5249390878377942]
+    # kita_std = [0.26663833485005356, 0.2701370696494548, 0.2788614149839678]
+    # iwa_mean = [0.45697290401600527, 0.46483589818332716, 0.49824474234682764]
+    # iwa_std = [0.25909249960699154, 0.2629111357014475, 0.2727926945783674]
+    yuzu_mean = [0.473011202617427, 0.4782059758651597, 0.507979008834504]
+    yuzu_std = [0.2559886470196603, 0.2586286530046429, 0.271950605656863]
+    # discriminator_kita = xcepDscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
+    # discriminator_iwa = xcepDscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
+    discriminator_yuzu = xcepDscriminator('/api/model/yuzu/xception.pth', yuzu_mean, yuzu_std)
 
 
     def __str__(self):
@@ -62,18 +65,19 @@ class Image(models.Model):
     # 追加
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        kita_result = self.discriminator_kita.predict(self.file)
-        iwa_result = self.discriminator_iwa.predict(self.file)
+        yuzu_result = self.discriminator_yuzu.predict(self.file)
+        # kita_result = self.discriminator_kita.predict(self.file)
+        # iwa_result = self.discriminator_iwa.predict(self.file)
         self.viewable = True
-        if (kita_result == True and iwa_result == True):
-            self.tag = "YUZU"
-        elif (kita_result == True and iwa_result == False):
-            self.tag = "KITA"
-        elif (kita_result == False and iwa_result == True):
+        if (yuzu_result == 0):
             self.tag = "IWA"
-        else:
+        elif (yuzu_result == 1):
+            self.tag = "KITA"
+        elif (yuzu_result == 2):
             self.tag = "OTHER"
             self.viewable = False
+        else:
+            self.tag = "YUZU"
 
         super(Image, self).save()
 
