@@ -67,29 +67,42 @@ export class LikeboxComponent implements OnInit {
     });
   }
 
-  uploadFile(event) {
+  async uploadFile(event) {
     this.uploading = true;
     for (let index = 0; index < event.length; index++) {
+      console.log(index);
       const element = event[index];
       this.form.get("profile").setValue(element);
       const formData = new FormData();
       formData.append("file", this.form.get("profile").value);
       formData.append("owner", this.form.get("user").value);
       formData.append("viewable", "true");
-      this.apiService.upload(formData).subscribe(
-        res => {
-          this.files.unshift(res);
-          if (index == event.length - 1) {
-            this.uploading = false;
-          }
-        },
-        err => {
-          console.log(err);
-          if (index == event.length - 1) {
-            this.uploading = false;
-          }
+      try {
+        const res = await this.apiService.upload(formData);
+
+        this.files.unshift(res);
+        if (index == event.length - 1) {
+          this.uploading = false;
         }
-      );
+      } catch (err) {
+        if (index == event.length - 1) {
+          this.uploading = false;
+        }
+      }
+
+      //   res => {
+      //     this.files.unshift(res);
+      //     if (index == event.length - 1) {
+      //       this.uploading = false;
+      //     }
+      //   },
+      //   err => {
+      //     console.log(err);
+      //     if (index == event.length - 1) {
+      //       this.uploading = false;
+      //     }
+      //   }
+      // );
     }
   }
 

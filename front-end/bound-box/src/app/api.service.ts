@@ -34,9 +34,11 @@ export class ApiService {
   }
 
   upload(formData) {
-    return this.httpClient.post<any>(`${this.baseImageUrl}`, formData, {
-      headers: this.getMultiAuthHeaders()
-    });
+    return this.httpClient
+      .post<any>(`${this.baseImageUrl}`, formData, {
+        headers: this.getMultiAuthHeaders()
+      })
+      .toPromise();
   }
   getImage() {
     return this.httpClient.get<any>(`${this.baseImageUrl}`);
