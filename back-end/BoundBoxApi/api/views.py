@@ -11,7 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.pagination import LimitOffsetPagination
-from .discriminator_pytorch import Discriminator
+from .discriminator_xception import Discriminator
 from django.db import reset_queries
 
 from urllib import parse

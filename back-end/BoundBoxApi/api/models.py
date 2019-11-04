@@ -6,7 +6,8 @@ from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 # add
-from .discriminator_pytorch import Discriminator
+from .discriminator_xception import Discriminator as xcepDscriminator
+from .discriminator_resnet import Discriminator as resDiscriminator
 
 
 class CustomUser(AbstractUser):
@@ -21,8 +22,13 @@ class Image(models.Model):
     viewable = models.BooleanField()
     checked = models.BooleanField(default=False)
     # add
-    discriminator_kita = Discriminator('/api/model/kitagawa/resnet-50.pth')
-    discriminator_iwa = Discriminator('/api/model/iwasawa/resnet-50.pth')
+    kita_mean = [0.49297256026361114, 0.4974875424166868, 0.5249390878377942]
+    kita_std = [0.26663833485005356, 0.2701370696494548, 0.2788614149839678]
+    iwa_mean = [0.45697290401600527, 0.46483589818332716, 0.49824474234682764]
+    iwa_std = [0.25909249960699154, 0.2629111357014475, 0.2727926945783674]
+    discriminator_kita = xcepDscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
+    discriminator_iwa = xcepDscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
+
 
     def __str__(self):
         return self.file.name
