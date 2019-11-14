@@ -12,6 +12,7 @@ import { LikeboxComponent } from "./likebox/likebox.component";
 import { HomeComponent } from "./home/home.component";
 
 import { DragDropDirective } from "../drag-drop.directive";
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DragDropDirective } from "../drag-drop.directive";
     RecommendComponent,
     LikeboxComponent,
     HomeComponent,
-    DragDropDirective
+    DragDropDirective,
+    AdminComponent
   ],
   imports: [
     CommonModule,

@@ -6,8 +6,7 @@ from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext_lazy as _
 
 # add
-from .discriminator_xception import Discriminator as xcepDscriminator
-from .discriminator_resnet import Discriminator as resDiscriminator
+from .discriminator_xception import Discriminator as Dscriminator
 
 
 class CustomUser(AbstractUser):
@@ -21,6 +20,9 @@ class Image(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     viewable = models.BooleanField()
     checked = models.BooleanField(default=False)
+    # #TODO tagをゆず、キタ、イワを表すEnum型に変更
+    tag = models.CharField(max_length=4, choices=Tag.choices(), null=True)
+    description = models.TextField(max_length=360, null=True)
     # add
     # kita_mean = [0.49297256026361114, 0.4974875424166868, 0.5249390878377942]
     # kita_std = [0.26663833485005356, 0.2701370696494548, 0.2788614149839678]
@@ -28,17 +30,13 @@ class Image(models.Model):
     # iwa_std = [0.25909249960699154, 0.2629111357014475, 0.2727926945783674]
     yuzu_mean = [0.473011202617427, 0.4782059758651597, 0.507979008834504]
     yuzu_std = [0.2559886470196603, 0.2586286530046429, 0.271950605656863]
-    # discriminator_kita = xcepDscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
-    # discriminator_iwa = xcepDscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
-    discriminator_yuzu = xcepDscriminator('/api/model/yuzu/xception.pth', yuzu_mean, yuzu_std)
+    # discriminator_kita = Dscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
+    # discriminator_iwa = Dscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
+    discriminator_yuzu = Dscriminator('/api/model/yuzu/xception.pth', yuzu_mean, yuzu_std)
 
 
     def __str__(self):
         return self.file.name
-
-    # #TODO tagをゆず、キタ、イワを表すEnum型に変更
-    tag = models.CharField(max_length=4, choices=Tag.choices(), null=True)
-    description = models.TextField(max_length=360, null=True)
 
     def no_of_comments(self):
         comments = Comment.objects.filter(image=self)
@@ -69,11 +67,11 @@ class Image(models.Model):
         # kita_result = self.discriminator_kita.predict(self.file)
         # iwa_result = self.discriminator_iwa.predict(self.file)
         self.viewable = True
-        if (yuzu_result == 0):
+        if yuzu_result == 0:
             self.tag = "IWA"
-        elif (yuzu_result == 1):
+        elif yuzu_result == 1:
             self.tag = "KITA"
-        elif (yuzu_result == 2):
+        elif yuzu_result == 2:
             self.tag = "OTHER"
             self.viewable = False
         else:
