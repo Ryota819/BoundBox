@@ -66,7 +66,7 @@ class Image(models.Model):
         elif yuzu_result == 1:
             self.tag = "KITA"
         elif yuzu_result == 2:
-            self.tag = "OTHER"
+            self.tag = "Other"
             self.viewable = False
         else:
             self.tag = "YUZU"
