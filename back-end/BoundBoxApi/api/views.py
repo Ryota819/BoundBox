@@ -24,26 +24,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-# class ImageViewSet(viewsets.ModelViewSet):
-#     parser_class = (FileUploadParser,)
-#     queryset = Image.objects.all()
-#     serializer_class = ImageSerializer
-#     authentication_classes = (TokenAuthentication,)
-#     permission_classes = (AllowAny,)
-#
-#     @action(detail=True, methods=['POST'])
-#     def upload_file(self, request, pk=None):
-#         user = User.objects.get(id=request.user)
-#         request.data.append('owner', user)
-#         image_serializer = ImageSerializer(data=request.data)
-#
-#         if image_serializer.is_valid():
-#             image_serializer.save()
-#             return Response(image_serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(image_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#
-
 class FileUploadView(APIView):
     parser_class = (FileUploadParser,)
     pagination_class = LimitOffsetPagination
@@ -55,26 +35,6 @@ class FileUploadView(APIView):
         file_serializer = ImageSerializer(data=request.data)
         # viewable = True
         if file_serializer.is_valid():
-            # TODO 分類ロジックでtagをつける。
-            # discriminator_kita = Discriminator('/api/model/kitagawa/resnet-50.pth')
-            # kita_result = discriminator_kita.predict(request.data['file'])
-            # discriminator_iwa = Discriminator('/api/model/iwasawa/resnet-50.pth')
-            # iwa_result = discriminator_iwa.predict(request.data['file'])
-            # if (kita_result == True and iwa_result == True):
-            #     tag = "YUZU"
-            #     print(tag)
-            # elif (kita_result == True and iwa_result == False):
-            #     tag = "KITA"
-            #     print(tag)
-            # elif (kita_result == False and iwa_result == True):
-            #     tag = "IWA"
-            #     print(tag)
-            # else:
-            #     tag = "OTHER"
-            #     print(tag)
-            #     viewable = False
-
-            # file_serializer.save(owner=user, tag=tag, viewable=viewable)
             file_serializer.save(owner=user)
             reset_queries()
             return Response(file_serializer.data, status=status.HTTP_201_CREATED)
@@ -88,6 +48,10 @@ class FileUploadView(APIView):
         else:
             image = Image.objects.filter(viewable='True').all().order_by('timestamp').reverse()
 
+        if "checked" in request.GET:
+            get_data = request.query_params
+            image = Image.objects.filter(checked='False').all().order_by('timestamp').reverse()
+
         pagenator = LimitOffsetPagination()
         result_page = pagenator.paginate_queryset(image, request)
         serializer = ImageSerializer(result_page, many=True)
@@ -95,14 +59,30 @@ class FileUploadView(APIView):
         reset_queries()
         return Response(response, status=status.HTTP_200_OK)
 
+    def patch(self, request):
+        image = Image.objects.get(pk=request.data['image'])
+        tag = request.data['updateTag']
+        if tag == 1:
+            image.tag = "YUZU"
+        if tag == 2:
+            image.tag = "KITA"
+        if tag == 3:
+            image.tag = "IWA"
+        if tag == 4:
+            image.tag = "Other"
+        print(image.tag)
+        image.update()
+        response = {'message': 'update image'}
+        return Response(response, status=status.HTTP_200_OK)
+
     def delete(self, request):
+
         image = Image.objects.get(pk=request.query_params['file'])
         image.viewable = False
         image.save()
         response = {'message': 'delete image'}
         reset_queries()
         return Response(response, status=status.HTTP_200_OK)
-
 
 
 class CommentViewSet(viewsets.ModelViewSet):

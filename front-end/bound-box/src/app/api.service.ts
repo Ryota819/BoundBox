@@ -17,7 +17,7 @@ export class ApiService {
   constructor(
     private httpClient: HttpClient,
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   loginUser(authData) {
     const body = JSON.stringify(authData);
@@ -53,9 +53,24 @@ export class ApiService {
     );
   }
 
+  getNotCheckedImage() {
+    return this.httpClient.get<any>(
+      `${this.baseImageUrl}?checked=false`
+    );
+  }
+
   getNextImage(next) {
     return this.httpClient.get<any>(`${this.baseUrl}${next}`);
   }
+
+  // updateImage
+  updateTag(formData) {
+    const body = JSON.stringify(formData);
+    return this.httpClient.patch(`${this.baseImageUrl}`, body, {
+      headers: this.getAuthHeaders()
+    })
+  }
+
   deleteImage(id) {
     return this.httpClient.delete(`${this.baseImageUrl}?file=${id}`);
   }

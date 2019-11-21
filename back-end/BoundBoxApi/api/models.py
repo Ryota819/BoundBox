@@ -24,14 +24,9 @@ class Image(models.Model):
     tag = models.CharField(max_length=4, choices=Tag.choices(), null=True)
     description = models.TextField(max_length=360, null=True)
     # add
-    # kita_mean = [0.49297256026361114, 0.4974875424166868, 0.5249390878377942]
-    # kita_std = [0.26663833485005356, 0.2701370696494548, 0.2788614149839678]
-    # iwa_mean = [0.45697290401600527, 0.46483589818332716, 0.49824474234682764]
-    # iwa_std = [0.25909249960699154, 0.2629111357014475, 0.2727926945783674]
     yuzu_mean = [0.473011202617427, 0.4782059758651597, 0.507979008834504]
     yuzu_std = [0.2559886470196603, 0.2586286530046429, 0.271950605656863]
-    # discriminator_kita = Dscriminator('/api/model/kitagawa/xception.pth', kita_mean, kita_std)
-    # discriminator_iwa = Dscriminator('/api/model/iwasawa/xception.pth', iwa_mean, iwa_std)
+
     discriminator_yuzu = Dscriminator('/api/model/yuzu/xception.pth', yuzu_mean, yuzu_std)
 
 
@@ -63,9 +58,8 @@ class Image(models.Model):
     # 追加
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+
         yuzu_result = self.discriminator_yuzu.predict(self.file)
-        # kita_result = self.discriminator_kita.predict(self.file)
-        # iwa_result = self.discriminator_iwa.predict(self.file)
         self.viewable = True
         if yuzu_result == 0:
             self.tag = "IWA"
@@ -77,6 +71,10 @@ class Image(models.Model):
         else:
             self.tag = "YUZU"
 
+        super(Image, self).save()
+    def update(self):
+        print("change")
+        self.checked = True
         super(Image, self).save()
 
 

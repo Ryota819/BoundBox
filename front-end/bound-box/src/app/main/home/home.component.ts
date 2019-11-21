@@ -3,7 +3,7 @@ import { GlobalService } from "../../global.service";
 import { ApiService } from "../../api.service";
 import { User } from "../../models/user";
 import { Subscription } from "rxjs/Subscription";
-import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { environment } from "../../../environments/environment";
 @Component({
   selector: "app-home",
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     private apiService: ApiService,
     private global: GlobalService,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -36,9 +36,9 @@ export class HomeComponent implements OnInit {
         this.files = res["result"];
         this.next = res["next"];
       },
-      err => {}
+      err => { }
     );
-    $(".gallery-list-item").click(function() {
+    $(".gallery-list-item").click(function () {
       let value = $(this).attr("data-filter");
       if (value === "all") {
         $(".filter").show(300);
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    $(".gallery-list-item").click(function() {
+    $(".gallery-list-item").click(function () {
       $(this)
         .addClass("active-item")
         .siblings()
@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
           Array.prototype.push.apply(this.files, res["result"]);
           this.next = res["next"];
         },
-        err => {}
+        err => { }
       );
     }
   }

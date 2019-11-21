@@ -6,7 +6,7 @@ from .models import Image, Comment, Empathy, CustomUser
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('id', 'username', 'password', 'email')
+        fields = ('id', 'username', 'password', 'email', 'is_staff')
         extra_kwargs = {'password': {'write_only': True, 'required': True},
                         'email': {'write_only': True, 'required': True}}
 
@@ -22,7 +22,7 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = ('id', 'file', 'owner', 'tag', 'viewable', 'no_of_comments', 'no_of_empathy', 'list_of_commenter', 'list_of_empathizer')
+        fields = ('id', 'file', 'owner', 'tag', 'viewable', 'checked', 'no_of_comments', 'no_of_empathy', 'list_of_commenter', 'list_of_empathizer')
 
 
 class CommentSerializer(serializers.ModelSerializer):

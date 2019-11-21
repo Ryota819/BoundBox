@@ -6,6 +6,9 @@
           font-weight-bold">Bound</span><span class="h1">Box</span></a>
 
     <ul class="nav">
+      <li class="nav-item" *ngIf="admin">
+        <a routerLink="/admin" class="nav-link menu-item"><i class="fas fa-user-cog fa-2x"></i></a>
+      </li>
       <li class="nav-item">
         <a routerLink="/mybox" class="nav-link menu-item"><i class="fas fa-box-open fa-2x"></i></a>
       </li>
